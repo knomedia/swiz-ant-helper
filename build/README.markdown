@@ -1,0 +1,3 @@
+The swiz-ant-helper is a ant build file (with accompanying properties file) that will create class packages, BeanProvider files, and your SwizConfiguration as an external file.
+
+Swiz is an open source framework (https://github.com/swiz/swiz-framework) and is created and owned by the Swiz Framework Contributors. The Swiz SWC is provided as currently the default ant target copies it to your libs directory for you.

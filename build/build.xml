@@ -7,6 +7,7 @@
 		<antcall target="packages" />
 		<antcall target="create-default-beanProviders" />
 		<antcall target="swiz-config" />
+		<antcall target="copy-swc" />
 	</target>
 	
 	<target name="packages" description="Create default packages for views, models, events, etc">
@@ -81,6 +82,10 @@
 		<antcall target="bean-provider">
 			<param name="beanName" value="CommandBeans" />
 		</antcall>
+	</target>
+	
+	<target name="copy-swc" description="copies local swc file to the libs folder">
+		<copy file="build/${swc.name}" toFile="${libs.dir}/${swc.name}" />
 	</target>
 	
 </project>
