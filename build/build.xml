@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="swiz-helper" basedir="../" default="setup">
+	
+	<property file="${basedir}/build/build.properties" />
+	
+	<target name="setup" description="Creates packages, beanproviders, Inits Swiz">
+		<antcall target="packages" />
+		<antcall target="create-default-beanProviders" />
+		<antcall target="swiz-config" />
+	</target>
+	
+	<target name="packages" description="Create default packages for views, models, events, etc">
+		<echo message="Creating packages for: ${top.level.domain}.${domain.name}" />
+		
+		<mkdir dir="src/${top.level.domain}/${domain.name}/commands" />
+		<mkdir dir="src/${top.level.domain}/${domain.name}/config" />
+		<mkdir dir="src/${top.level.domain}/${domain.name}/events" />
+		<mkdir dir="src/${top.level.domain}/${domain.name}/models" />
+		<mkdir dir="src/${top.level.domain}/${domain.name}/views" />
+		<mkdir dir="src/${top.level.domain}/${domain.name}/views/presentationModels" />
+		<mkdir dir="src/${top.level.domain}/${domain.name}/services" />
+		
+		<echo message="Packages Created" />
+	</target>
+	
+	<target name="swiz-config" depends="packages" description="Creates a Swiz Config File">
+		<echo message="Creating SwizConf file" />
+		
+		<echo file="src/${top.level.domain}/${domain.name}/config/${swiz.init.file.name}.mxml"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<swiz:Swiz xmlns:fx="http://ns.adobe.com/mxml/2009"  
+		   xmlns:swiz="http://swiz.swizframework.org"
+		   xmlns:config="${top.level.domain}.${domain.name}.config.*" >
+
+		<swiz:config>
+			<swiz:SwizConfig eventPackages="${top.level.domain}.${domain.name}.events.*" 
+							 viewPackages="${top.level.domain}.${domain.name}.views.*" />
+		</swiz:config>
+
+		<swiz:loggingTargets>
+			<swiz:SwizTraceTarget id="traceTarget" />
+		</swiz:loggingTargets>
+
+
+		<swiz:beanProviders>
+			<config:CommandBeans id="commandBeans" />
+			<config:ModelBeans id="modelBeans" />
+			<config:PresentationModelBeans id="pMBeans" />
+			<config:ServiceBeans id="serviceBeans" />
+		</swiz:beanProviders>
+
+</swiz:Swiz>
+
+]]>
+		</echo>
+	</target>
+	
+	<target name="bean-provider" description="Creates a bean provider based on the 'beanName' param" >
+		<property name="beanName" value="BeanProvider" />
+		<echo file="src/${top.level.domain}/${domain.name}/config/${beanName}.mxml"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<swiz:BeanProvider xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				   xmlns:swiz="http://swiz.swizframework.org">
+
+	<!-- Insert Beans -->
+
+</swiz:BeanProvider>
+]]>
+		</echo>
+		<echo message="Created ${beanName}.mxml" />
+	</target>
+	
+	<target name="create-default-beanProviders" description="Creates BeanProviders for Models, PresentationModels, Services, Commands" >
+		<antcall target="bean-provider">
+			<param name="beanName" value="ModelBeans" />
+		</antcall>
+		<antcall target="bean-provider">
+			<param name="beanName" value="ServiceBeans" />
+		</antcall>
+		<antcall target="bean-provider">
+			<param name="beanName" value="PresentationModelBeans" />
+		</antcall>
+		<antcall target="bean-provider">
+			<param name="beanName" value="CommandBeans" />
+		</antcall>
+	</target>
+	
+</project>
