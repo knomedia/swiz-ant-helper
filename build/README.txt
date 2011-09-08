@@ -1,0 +1,1 @@
+The swiz-ant-helper is a ant build file (with accompanying properties file) that will create class packages, BeanProvider files, and your SwizConfiguration as an external file
